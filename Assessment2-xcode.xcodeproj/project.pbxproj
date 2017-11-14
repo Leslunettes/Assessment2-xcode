@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D5761CD71FBBA47F00E8957A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CD61FBBA47F00E8957A /* main.cpp */; };
+		D5761CE91FBBA4AE00E8957A /* BankAccount.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CDD1FBBA4AD00E8957A /* BankAccount.cpp */; };
+		D5761CEA1FBBA4AE00E8957A /* Formula.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CDE1FBBA4AD00E8957A /* Formula.cpp */; };
+		D5761CEB1FBBA4AE00E8957A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CDF1FBBA4AD00E8957A /* main.cpp */; };
+		D5761CEC1FBBA4AE00E8957A /* BoolFormula.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CE71FBBA4AE00E8957A /* BoolFormula.cpp */; };
+		D5761CED1FBBA4AE00E8957A /* Assignment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5761CE81FBBA4AE00E8957A /* Assignment.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +28,18 @@
 
 /* Begin PBXFileReference section */
 		D5761CD31FBBA47F00E8957A /* Assessment2-xcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Assessment2-xcode"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5761CD61FBBA47F00E8957A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D5761CDD1FBBA4AD00E8957A /* BankAccount.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BankAccount.cpp; sourceTree = "<group>"; };
+		D5761CDE1FBBA4AD00E8957A /* Formula.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formula.cpp; sourceTree = "<group>"; };
+		D5761CDF1FBBA4AD00E8957A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "../../Assessment2-xcoded/main.cpp"; sourceTree = "<group>"; };
+		D5761CE01FBBA4AD00E8957A /* mainaccount.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mainaccount.txt; sourceTree = "<group>"; };
+		D5761CE11FBBA4AD00E8957A /* mainformula.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mainformula.txt; sourceTree = "<group>"; };
+		D5761CE21FBBA4AD00E8957A /* BoolFormula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoolFormula.h; sourceTree = "<group>"; };
+		D5761CE31FBBA4AD00E8957A /* Assignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assignment.h; sourceTree = "<group>"; };
+		D5761CE41FBBA4AE00E8957A /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; };
+		D5761CE51FBBA4AE00E8957A /* Formula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formula.h; sourceTree = "<group>"; };
+		D5761CE61FBBA4AE00E8957A /* makefile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = makefile.txt; sourceTree = "<group>"; };
+		D5761CE71FBBA4AE00E8957A /* BoolFormula.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoolFormula.cpp; sourceTree = "<group>"; };
+		D5761CE81FBBA4AE00E8957A /* Assignment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assignment.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +72,18 @@
 		D5761CD51FBBA47F00E8957A /* Assessment2-xcode */ = {
 			isa = PBXGroup;
 			children = (
-				D5761CD61FBBA47F00E8957A /* main.cpp */,
+				D5761CE81FBBA4AE00E8957A /* Assignment.cpp */,
+				D5761CE31FBBA4AD00E8957A /* Assignment.h */,
+				D5761CDD1FBBA4AD00E8957A /* BankAccount.cpp */,
+				D5761CE41FBBA4AE00E8957A /* BankAccount.h */,
+				D5761CE71FBBA4AE00E8957A /* BoolFormula.cpp */,
+				D5761CE21FBBA4AD00E8957A /* BoolFormula.h */,
+				D5761CDE1FBBA4AD00E8957A /* Formula.cpp */,
+				D5761CE51FBBA4AE00E8957A /* Formula.h */,
+				D5761CDF1FBBA4AD00E8957A /* main.cpp */,
+				D5761CE01FBBA4AD00E8957A /* mainaccount.txt */,
+				D5761CE11FBBA4AD00E8957A /* mainformula.txt */,
+				D5761CE61FBBA4AE00E8957A /* makefile.txt */,
 			);
 			path = "Assessment2-xcode";
 			sourceTree = "<group>";
@@ -119,7 +145,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5761CD71FBBA47F00E8957A /* main.cpp in Sources */,
+				D5761CEA1FBBA4AE00E8957A /* Formula.cpp in Sources */,
+				D5761CEC1FBBA4AE00E8957A /* BoolFormula.cpp in Sources */,
+				D5761CEB1FBBA4AE00E8957A /* main.cpp in Sources */,
+				D5761CED1FBBA4AE00E8957A /* Assignment.cpp in Sources */,
+				D5761CE91FBBA4AE00E8957A /* BankAccount.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
