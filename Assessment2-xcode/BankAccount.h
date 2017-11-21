@@ -89,7 +89,7 @@ public:
 	// If a certain stock is no longer held (it's amount is 0) it should not be printed!
 	// Notice the spaces!
 	//
-	// Use std::to_string to convert numbers to strings.
+	// Use std::to_string to convert numbers @to strings.
 	virtual std::string toString() const; // a compléter avec d'autres méthodes.
 
 	// Override the redirection. Should work for all
@@ -118,7 +118,10 @@ public:
 	// Destructor
 	~CurrentAccount();
 protected:
-	// Add protected members
+    float overdraft_;
+    float interest_;
+    float fee_;
+    
 private:
 	// Add private members
 };
@@ -136,7 +139,7 @@ public:
 
 	~SavingsAccount();
 protected:
-	// Add protected members
+    float interest_;
 private:
 	// Add private members
 };
@@ -174,6 +177,7 @@ public:
 
 protected:
 	// Add protected members
+    // creer tab pour les stocks avec string et quantity
 private:
 	// Add private members
 };

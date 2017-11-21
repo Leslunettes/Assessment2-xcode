@@ -96,13 +96,47 @@ ostream& operator<<(ostream& o, const Account& a)
 CurrentAccount::CurrentAccount(std::string name, float overdraft, float interest, float fee)
 : Account(name)
 {
-    // Implement me
+    if (overdraft<0){
+        overdraft_=0;
+    } else {
+        overdraft_=overdraft;
+    }
+    
+    if (interest<0){
+        interest_=0;
+    } else {
+        interest_=interest;
+    }
+    
+    if(fee<0){
+        fee_=0;
+    }else{
+        fee_=fee;
+    }
 }
 
 CurrentAccount::CurrentAccount(std::string name, float balance, float overdraft, float interest, float fee)
 : Account(name,balance)
 {
-    // Implement me
+    if (overdraft<0){
+        overdraft_=0;
+    } else {
+        overdraft_=overdraft;
+    }
+    
+    if (interest<0){
+        interest_=0;
+    } else {
+        interest_=interest;
+    }
+    
+    if(fee<0){
+        fee_=0;
+    }else{
+        fee_=fee;
+    }
+    
+    // fonction à ajouter.
 }
 
 // Destructor
@@ -114,14 +148,23 @@ CurrentAccount::~CurrentAccount()
 SavingsAccount::SavingsAccount(std::string name, float interest)
 : Account(name)
 {
-    // Implement me
+    if(interest<0){
+        interest_=0;
+    }else{
+        interest_=interest;
+    }
 }
 
 SavingsAccount::SavingsAccount(std::string name, float balance, float interest)
 : Account(name,balance)
 {
-    // Implement me
+    if(interest<0){
+        interest_=0;
+    }else{
+        interest_=interest;
+    }
 }
+// fonction month dans Saving Account
 
 SavingsAccount::~SavingsAccount()
 {
@@ -131,29 +174,31 @@ SavingsAccount::~SavingsAccount()
 StockAccount::StockAccount(std::string name)
 : Account(name)
 {
-    // Implement me
 }
 
 StockAccount::StockAccount(std::string name, float balance)
 : Account(name,balance)
 {
-    // Implement me
 }
 
 StockAccount::~StockAccount()
 {
-    // Implement me
 }
 
 bool StockAccount::buy (const std::string stock, float amount, float value)
 {
-    // Implement me
-    return false;
+    if (amount*value>balance()){
+        return false;
+    }else{
+        balance_-=(amount*value);
+        return true;
+    }
+    // voir les stocks et ajouter dans un tab
 }
 
 bool StockAccount::sell(const std::string stock, float amount)
 {
-    // Implement me
+    
     return false;
 }
 
