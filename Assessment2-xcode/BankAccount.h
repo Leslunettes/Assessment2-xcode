@@ -53,7 +53,7 @@ public:
 	// Current account can withdraw up to the overdraft limit
 	// Other accounts cannot be below 0
 	bool deposit(float val);
-	bool withdraw(float val);
+	virtual bool withdraw(float val); // différente pour curent account
 
 	// Update the account with daily/monthly events@
 	// Current account has a fee that is paid monthly
@@ -63,8 +63,8 @@ public:
 	// Savings account is increased by the interest given in it
 	// every month
 	// Stock account does not have daily / monthly events
-	virtual void day();
-	virtual void month();
+	virtual void day() =0;// methode abstracte, ne peut rien faire dépend du type de compte
+	virtual void month() =0;
 
 	// Return the name of the owner
 	std::string name() const;
@@ -74,7 +74,7 @@ public:
 	// Current Account
 	// Savings Account
 	// Stock Account
-	std::string type() const;
+	virtual std::string type() const=0;
 
 	// All accounts output:
 	// "Type of account" of "name" (balance)
@@ -90,13 +90,14 @@ public:
 	// Notice the spaces!
 	//
 	// Use std::to_string to convert numbers to strings.
-	std::string toString() const;
+	virtual std::string toString() const; // a compléter avec d'autres méthodes.
 
 	// Override the redirection. Should work for all
 	// references to Drinks
 	friend std::ostream& operator<<(std::ostream&, const Account&);
 protected:
-	// add protected members
+    float balance_;
+    std::string name_;
 private:
 	// add private members
 };
