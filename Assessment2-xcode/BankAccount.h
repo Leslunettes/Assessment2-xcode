@@ -41,7 +41,7 @@ public:
 	Account(std::string name, float balance);
 
 	// Clean
-	~Account();
+	virtual ~Account();
 
 	// Return the balance
 	float balance() const;
@@ -96,13 +96,13 @@ public:
 	// references to Drinks
 	friend std::ostream& operator<<(std::ostream&, const Account&);
 protected:
-    float balance_;
-    std::string name_;
+	float balance_;
+	std::string name_;
 private:
 	// add private members
 };
 
-class CurrentAccount : public Account {
+class CurrentAccount: public Account {
 public:
 	// No need to implement default, copy, and move constructors
 	CurrentAccount() = delete;
@@ -112,21 +112,32 @@ public:
 	// Create a current account.
 	// You can assume that overdraft, overdraft interest, and fee are
 	// non-negative.
-	CurrentAccount(std::string name, float overdraft, float interest, float fee);
-	CurrentAccount(std::string name, float balance, float overdraft, float interest, float fee);
+	CurrentAccount(std::string name, float overdraft, float interest,
+			float fee);
+	CurrentAccount(std::string name, float balance, float overdraft,
+			float interest, float fee);
 
 	// Destructor
-	~CurrentAccount();
+	virtual ~CurrentAccount();
+
+	virtual std::string type() const;
+
+	virtual std::string toString() const;
+
+	virtual void day();
+	virtual void month();
+
+	virtual bool withdraw(float val);
 protected:
-    float overdraft_;
-    float interest_;
-    float fee_;
-    
+	float overdraft_;
+	float interest_;
+	float fee_;
+
 private:
 	// Add private members
 };
 
-class SavingsAccount : public Account {
+class SavingsAccount: public Account {
 public:
 	// No need to implement default, copy, and move constructors
 	SavingsAccount() = delete;
@@ -137,14 +148,20 @@ public:
 	SavingsAccount(std::string name, float interest);
 	SavingsAccount(std::string name, float balance, float interest);
 
-	~SavingsAccount();
+	virtual ~SavingsAccount();
+
+	virtual std::string type() const;
+
+	virtual std::string toString() const;
+
+	virtual void month();
 protected:
-    float interest_;
+	float interest_;
 private:
 	// Add private members
 };
 
-class StockAccount : public Account {
+class StockAccount: public Account {
 public:
 	// No need to implement default, copy, and move constructors
 	StockAccount() = delete;
@@ -154,7 +171,11 @@ public:
 	StockAccount(std::string name);
 	StockAccount(std::string name, float balance);
 
-	~StockAccount();
+	virtual ~StockAccount();
+
+	virtual std::string type() const=0;
+
+	virtual std::string toString() const;
 
 	// Buying, selling, and updating the value of a stock
 
@@ -162,7 +183,7 @@ public:
 	// should be sufficient to buy these many stocks
 	// The value parameter is per stock
 	// The operation returns true on successful buy and false otherwise
-	bool buy (const std::string stock, float amount, float value);
+	bool buy(const std::string stock, float amount, float value);
 
 	// Sell the given amount of this stock
 	// If the stock is not held in the account or the amount
@@ -177,11 +198,16 @@ public:
 
 protected:
 	// Add protected members
-    // creer tab pour les stocks avec string et quantity
+	// creer tab pour les stocks avec string et quantity
 private:
-	// Add private members
+	items** stocks_;
 };
 
+struct items {
+	std::string stock_;
+	float value_;
+	float amount_;
+};
 #endif
 /*
  * BankAccount.h
