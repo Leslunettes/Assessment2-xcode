@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "BankAccount.h"
+#include <cmath>
 
 using std::string;
 using std::ostream;
@@ -72,8 +73,8 @@ string Account::type() const {
 }
 
 string Account::toString() const { // convertir float en balance????
-	string balance_str = std::to_string(balance());
-	string output = type() + " of " + name() + " (" + balance_ + ") ";
+	string balance_str = std::to_string(balance_);
+	string output = type() + " of " + name() + " (" + balance_str + ")";
 	return output;
 }
 
@@ -139,18 +140,18 @@ string CurrentAccount::type() const {
 
 string CurrentAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	output += "(" + fee_ + "," + overdraft_ + ")";
+    output += "(" + std::to_string(fee_) + "," + std::to_string(overdraft_) + ")";
 	return output;
 }
 
 void CurrentAccount::day() {
 	if (balance_ < overdraft_) {
-		balance_ = balance_ - (balance_ * interest_) - 25;
+		balance_ = balance_ - (abs(balance_) * interest_) - 25;
 	}
 }
 
-void CurrentAccount::month() { // Ne fait rien dans Account
-	balance -= fee_;
+void CurrentAccount::month() {
+	balance_ -= fee_;
 }
 
 bool CurrentAccount::withdraw(float val) {
@@ -193,16 +194,16 @@ string SavingsAccount::type() const {
 
 string SavingsAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	output += "(" + interest_ + "%)";
+    output += "(" + std::to_string(interest_)+ "%)";
 	return output;
 }
 
 void SavingsAccount::month() {
-	balance_ = balance_ + balance_ * interest_;
+	balance_ = balance_ + abs(balance_) * interest_;
 }
 
 StockAccount::StockAccount(std::string name) :
-		Account(name) { //finir avec stock
+		Account(name) { //finir avec stock à init
 }
 
 StockAccount::StockAccount(std::string name, float balance) :
@@ -226,17 +227,18 @@ string StockAccount::toString() const { // convertir float en balance
 }
 
 bool StockAccount::buy(const std::string stock, float amount, float value) {
-	if (amount * value > balance()) {
+	if (amount * value > balance_) {
 		return false;
-	} else {
+	} else if (amount>0.0 && value>0.0) {
 		balance_ -= (amount * value);
 		return true;
-	}
+    }else{
+        return false;}
 	// voir les stocks et ajouter dans un tab
 }
 
 bool StockAccount::sell(const std::string stock, float amount) {
-
+// à finir
 	return false;
 }
 

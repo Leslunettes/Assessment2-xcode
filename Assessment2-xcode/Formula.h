@@ -86,7 +86,7 @@ public:
 
   // returns the name of the class:
   // not, and, or, T/F, variable name
-  std::string name() const;
+  virtual std::string name() const=0;
 
   // Returns a pointer to a deep copy
   Formula* copy() const;
@@ -95,7 +95,7 @@ public:
   // of the given formula
   Formula* negate() const;
 protected:
-  // Add protected members
+    std::string name_;
 private:
   // Add private members
 };
