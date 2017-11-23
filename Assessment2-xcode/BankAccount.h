@@ -53,7 +53,7 @@ public:
 	// Current account can withdraw up to the overdraft limit
 	// Other accounts cannot be below 0
 	bool deposit(float val);
-	virtual bool withdraw(float val); // différente pour curent account
+	virtual bool withdraw(float val); // différent pour curent account
 
 	// Update the account with daily/monthly events@
 	// Current account has a fee that is paid monthly
@@ -63,8 +63,8 @@ public:
 	// Savings account is increased by the interest given in it
 	// every month
 	// Stock account does not have daily / monthly events
-	virtual void day() =0;// methode abstracte, ne peut rien faire dépend du type de compte
-	virtual void month() =0;
+	virtual void day()=0;// methode abstracte, ne peut rien faire dépend du type de compte
+	virtual void month()=0;
 
 	// Return the name of the owner
 	std::string name() const;
@@ -201,8 +201,11 @@ protected:
 	// creer tab pour les stocks avec string et quantity
 private:
 	items** stocks_;
+	int capacityOfStocks_;
+	int numberOfStocks_;
 };
 
+// mettre au dessus?
 struct items {
 	std::string stock_;
 	float value_;
