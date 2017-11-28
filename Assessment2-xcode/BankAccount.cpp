@@ -272,7 +272,7 @@ string StockAccount::toString() const { // convertir float en balance
 	//cout << numberOfStocks_ << endl;
 	for (int i = 0; i < numberOfStocks_; i++) {
 		if (stocks_[i]->getAmount() != 0) {
-			 output += " (" + stocks_[0]->getStock() + ","+ std::to_string(stocks_[i]->getAmount()) + ","+ std::to_string(stocks_[i]->getValue()) + ")";
+			 output += " (" + stocks_[i]->getStock() + ","+ std::to_string(stocks_[i]->getAmount()) + ","+ std::to_string(stocks_[i]->getValue()) + ")";
 		}
 		// convertir en string les float?
 	}
@@ -288,7 +288,7 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 		// To check if stock is in our stocks
 		int i;
 		for (i=0; i < numberOfStocks_; i++) {
-			if (stocks_[i]->getStock() == stock) {
+           if (stocks_[i]->getStock() == stock) {
 				stocks_[i]->setValue(value);
 				stocks_[i]->setAmount(stocks_[i]->getAmount()+amount);
 			}
@@ -331,7 +331,7 @@ bool StockAccount::sell(const std::string stock, float amount) {
 		if (stocks_[i]->getStock() == stock) {
 			// if enough stock
 			if (stocks_[i]->getAmount() >= amount) {
-				stocks_[i]->setAmount(stocks_[i]->getAmount()*amount);
+				stocks_[i]->setAmount(stocks_[i]->getAmount()-amount);
 				balance_ += stocks_[i]->getValue() * amount;
 				return true;
 			} else {
