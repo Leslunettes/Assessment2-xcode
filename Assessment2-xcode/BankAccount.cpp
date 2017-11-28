@@ -23,13 +23,41 @@ using std::endl;
 
 constexpr unsigned int INITIALSIZE = 5;
 
-// mettre au dessus? in Private?
+/*
+ i tried to make a struck but it doesnt work....
 struct items {
-private :
 	std::string stock_;
 	float value_;
 	float amount_;
-};
+};*/
+items::items(std::string stock, float value, float amount) {
+    stock_ = stock;
+    value_ = value;
+    amount_ = amount;
+}
+std::string items::getStock() {
+    return stock_;
+}
+void items::setStock(std::string stock) {
+    stock_ = stock;
+}
+float items::getValue() {
+    return value_;
+}
+
+void items::setValue(float value) {
+    value_ = value;
+}
+float items::getAmount() {
+    return amount_;
+}
+void items::setAmount(float amount) {
+    amount_ = amount;
+}
+
+items::~items(){
+    
+}
 
 Account::Account(std::string name) :
 		name_ { name }, balance_(0.0) {
@@ -153,7 +181,7 @@ string CurrentAccount::type() const {
 
 string CurrentAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	output += "(" + std::to_string(fee_) + "," + std::to_string(overdraft_)
+	output += " (" + std::to_string(fee_) + "," + std::to_string(overdraft_)
 			+ ")"; // TO STRING??????
 	return output;
 }
@@ -207,7 +235,7 @@ string SavingsAccount::type() const {
 
 string SavingsAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	output += "(" + std::to_string(interest_) + "%)";
+	output += " (" + std::to_string(interest_) + "%)";
 	return output;
 }
 
@@ -222,8 +250,7 @@ StockAccount::StockAccount(std::string name) :
 }
 
 StockAccount::StockAccount(std::string name, float balance) :
-		Account(name, balance), capacityOfStocks_(INITIALSIZE), numberOfStocks_(
-				0), stocks_(new items*[capacityOfStocks_]) { // a finir
+		Account(name, balance), capacityOfStocks_(INITIALSIZE), numberOfStocks_(0), stocks_(new items*[capacityOfStocks_]) { // a finir
 }
 
 StockAccount::~StockAccount() {
@@ -241,23 +268,14 @@ string StockAccount::type() const {
 
 string StockAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-
-	if (numberOfStocks_){
-		items temp = *stocks_[0];
-	cout<< "non du dernier article :"<<std::to_tring(temp.stock_)<<endl;
-	}
-
-
-	/*//cout << numberOfStocks_ << endl;
-	string output;
+// penser au espace
+	//cout << numberOfStocks_ << endl;
 	for (int i = 0; i < numberOfStocks_; i++) {
-		cout << stocks_[0]->stock_ << endl;
-		if (stocks_[i]->amount_ != 0) {
-			 output += "(" + std::to_string(stocks_[0]->amount_) + "**,";
-			//+ std::to_string(stocks_[i]->amount_) + ","+ std::to_string(stocks_[i]->value_) + ")"
+		if (stocks_[i]->getAmount() != 0) {
+			 output += " (" + stocks_[0]->getStock() + ","+ std::to_string(stocks_[i]->getAmount()) + ","+ std::to_string(stocks_[i]->getValue()) + ")";
 		}
 		// convertir en string les float?
-	}*/
+	}
 	return output;
 }
 
@@ -268,11 +286,11 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 	} else if ((amount > 0.0) && (value > 0.0)) {
 
 		// To check if stock is in our stocks
-		int i = 0;
-		for (i; i < numberOfStocks_; i++) {
-			if (stocks_[i]->stock_ == stock) {
-				stocks_[i]->value_ = value;
-				stocks_[i]->amount_ += amount;
+		int i;
+		for (i=0; i < numberOfStocks_; i++) {
+			if (stocks_[i]->getStock() == stock) {
+				stocks_[i]->setValue(value);
+				stocks_[i]->setAmount(stocks_[i]->getAmount()+amount);
 			}
 		}
 
@@ -283,24 +301,21 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 			if (numberOfStocks_ == capacityOfStocks_) {
 				capacityOfStocks_ *= 2;
 				items** temp = new items*[capacityOfStocks_];
-				for (int j = 0; i < numberOfStocks_; i++) {
-					temp[i] = stocks_[i];
+				for (int j = 0; j < numberOfStocks_; j++) {
+					temp[j] = stocks_[j];
 				}
 				delete[] stocks_;
 				stocks_ = temp;
 			}
 
-			items item;
-			item.amount_ = amount;
-			item.stock_ = stock;
-			item.value_ = value;
+            items* item = new items(stock,value,amount);
 			//cout << std::to_string(item.value_)<< item.stock_;
 
-			stocks_[numberOfStocks_] = &item;
+			stocks_[numberOfStocks_] = item;
 			numberOfStocks_++;
 		}
 		balance_ -= (amount * value);
-		cout << stocks_[0]->stock_ << "ok ok ok ok";
+		//cout << stocks_[0]->stock_ << "ok ok ok ok";
 		return true;
 
 		// no positive values
@@ -313,11 +328,11 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 bool StockAccount::sell(const std::string stock, float amount) {
 // look for the stock name
 	for (int i = 0; i < numberOfStocks_; i++) {
-		if (stocks_[i]->stock_ == stock) {
+		if (stocks_[i]->getStock() == stock) {
 			// if enough stock
-			if (stocks_[i]->amount_ >= amount) {
-				stocks_[i]->amount_ -= amount;
-				balance_ += stocks_[i]->value_ * amount;
+			if (stocks_[i]->getAmount() >= amount) {
+				stocks_[i]->setAmount(stocks_[i]->getAmount()*amount);
+				balance_ += stocks_[i]->getValue() * amount;
 				return true;
 			} else {
 				return false;
@@ -329,8 +344,8 @@ bool StockAccount::sell(const std::string stock, float amount) {
 
 bool StockAccount::update(const std::string stock, float value) {
 	for (int i = 0; i < numberOfStocks_; i++) {
-		if (stocks_[i]->stock_ == stock) {
-			stocks_[i]->value_ = value;
+		if (stocks_[i]->getStock() == stock) {
+			stocks_[i]->setValue(value);
 		}
 	}
 	return false;
