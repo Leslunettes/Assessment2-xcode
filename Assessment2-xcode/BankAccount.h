@@ -14,6 +14,8 @@
 #include <string>
 #include <iosfwd>
 
+
+
 //
 // This exercise implements a simple hierarchy of bank accounts using inheritance.
 // The base class is Account and there are three derived classes:
@@ -63,8 +65,8 @@ public:
 	// Savings account is increased by the interest given in it
 	// every month
 	// Stock account does not have daily / monthly events
-	virtual void day()=0;// methode abstracte, ne peut rien faire dépend du type de compte
-	virtual void month()=0;
+	virtual void day();	// methode abstracte, ne peut rien faire dépend du type de compte
+	virtual void month();
 
 	// Return the name of the owner
 	std::string name() const;
@@ -161,6 +163,8 @@ private:
 	// Add private members
 };
 
+struct items;
+
 class StockAccount: public Account {
 public:
 	// No need to implement default, copy, and move constructors
@@ -173,7 +177,7 @@ public:
 
 	virtual ~StockAccount();
 
-	virtual std::string type() const=0;
+	virtual std::string type() const;
 
 	virtual std::string toString() const;
 
@@ -197,20 +201,13 @@ public:
 	bool update(const std::string stock, float value);
 
 protected:
-	// Add protected members
-	// creer tab pour les stocks avec string et quantity
-private:
 	items** stocks_;
 	int capacityOfStocks_;
 	int numberOfStocks_;
+private:
+
 };
 
-// mettre au dessus?
-struct items {
-	std::string stock_;
-	float value_;
-	float amount_;
-};
 #endif
 /*
  * BankAccount.h

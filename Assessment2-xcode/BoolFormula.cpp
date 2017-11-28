@@ -33,11 +33,11 @@ BoolFormula::BoolFormula(const BoolFormula& other)
   }
 }
 
-BoolFormula::BoolFormula(const string& formula)
+/*BoolFormula::BoolFormula(const string& formula)
   : formula_(nullptr)
 {
   formula_ = parse_(formula);
-}
+}*/
 
 
 bool BoolFormula::valid() {
@@ -61,7 +61,7 @@ ostream& operator<<(ostream& stream,const BoolFormula& formula) {
   return stream;
 }
 
-Formula* BoolFormula::parse_(string input)
+/*Formula* BoolFormula::parse_(string input)
 {
   input=removeSpaces_(input);
 
@@ -118,7 +118,7 @@ Formula* BoolFormula::parse_(string input)
   }
   else 
     return 0;
-}
+}*/
 
 string BoolFormula::removeSpaces_(string input)
 {

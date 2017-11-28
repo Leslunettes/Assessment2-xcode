@@ -6,6 +6,8 @@
  *      Module: CO3105
  *      Department of Computer Science
  *      University of Leicester
+ *
+ *      Student : AVP9
  */
 
 #include <iostream>
@@ -14,10 +16,20 @@
 #include <string>
 
 using std::string;
-using std::t
 using std::ostream;
+using std::cout;
+using std::cin;
+using std::endl;
 
 constexpr unsigned int INITIALSIZE = 5;
+
+// mettre au dessus? in Private?
+struct items {
+private :
+	std::string stock_;
+	float value_;
+	float amount_;
+};
 
 Account::Account(std::string name) :
 		name_ { name }, balance_(0.0) {
@@ -33,7 +45,7 @@ Account::Account(std::string name, float balance) :
 }
 
 Account::~Account() {
-	// Implement me
+	// Nothing to delete
 }
 
 float Account::balance() const {
@@ -47,12 +59,11 @@ bool Account::deposit(float val) {
 		balance_ += val;
 		return true;
 	}
+	return true;
 }
 
 bool Account::withdraw(float val) {
-	if (val < 0.0) {
-		return false;
-	} else if ((balance_ - val) < 0.0) {
+	if (val < 0.0 || ((balance_ - val) < 0.0)) {
 		return false;
 	} else {
 		balance_ -= val;
@@ -73,7 +84,7 @@ string Account::name() const {
 }
 
 string Account::type() const {
-	return "";
+	return ""; // abstract method
 }
 
 string Account::toString() const { // convertir float en balance????
@@ -96,13 +107,13 @@ CurrentAccount::CurrentAccount(std::string name, float overdraft,
 		overdraft_ = overdraft;
 	}
 
-	if (interest < 0) {
+	if (interest < 0.0) {
 		interest_ = 0.0;
 	} else {
 		interest_ = interest;
 	}
 
-	if (fee < 0) {
+	if (fee < 0.0) {
 		fee_ = 0.0;
 	} else {
 		fee_ = fee;
@@ -129,13 +140,11 @@ CurrentAccount::CurrentAccount(std::string name, float balance, float overdraft,
 	} else {
 		fee_ = fee;
 	}
-
-	// fonction à ajouter.
 }
 
 // Destructor
 CurrentAccount::~CurrentAccount() {
-	// Implement me
+	// Nothing to Delete
 }
 
 string CurrentAccount::type() const {
@@ -144,12 +153,13 @@ string CurrentAccount::type() const {
 
 string CurrentAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	output += "(" + fee_ + "," + overdraft_ + ")";// TO STRING??????
+	output += "(" + std::to_string(fee_) + "," + std::to_string(overdraft_)
+			+ ")"; // TO STRING??????
 	return output;
 }
 
 void CurrentAccount::day() {
-	if (balance_ < overdraft_) {
+	if (balance_ < (-overdraft_)) {
 		balance_ = balance_ - (abs(balance_) * interest_ / 100) - 25;
 		// interet est en pourcentage ou un entier?
 	}
@@ -160,9 +170,7 @@ void CurrentAccount::month() {
 }
 
 bool CurrentAccount::withdraw(float val) {
-	if (val < 0.0) {
-		return false;
-	} else if ((balance_ - val) < overdraft_) {
+	if (val < 0.0 || ((balance_ - val) < (-overdraft_))) {
 		return false;
 	} else {
 		balance_ -= val;
@@ -181,7 +189,7 @@ SavingsAccount::SavingsAccount(std::string name, float interest) :
 
 SavingsAccount::SavingsAccount(std::string name, float balance, float interest) :
 		Account(name, balance) {
-	if (interest < 0) {
+	if (interest < 0.0) {
 		interest_ = 0.0;
 	} else {
 		interest_ = interest;
@@ -233,29 +241,45 @@ string StockAccount::type() const {
 
 string StockAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-	for (int i = 0; i < numberOfStocks_; i++) {
-		if (stocks_[i]->amount_ != 0) {
-			output += "(" + stocks_[i]->stock_ + "," + stocks_[i]->amount_ + ","
-					+ stocks_[i]->value_ + ")";
-		} // convertir en string les float?
+
+	if (numberOfStocks_){
+		items temp = *stocks_[0];
+	cout<< "non du dernier article :"<<std::to_tring(temp.stock_)<<endl;
 	}
+
+
+	/*//cout << numberOfStocks_ << endl;
+	string output;
+	for (int i = 0; i < numberOfStocks_; i++) {
+		cout << stocks_[0]->stock_ << endl;
+		if (stocks_[i]->amount_ != 0) {
+			 output += "(" + std::to_string(stocks_[0]->amount_) + "**,";
+			//+ std::to_string(stocks_[i]->amount_) + ","+ std::to_string(stocks_[i]->value_) + ")"
+		}
+		// convertir en string les float?
+	}*/
 	return output;
 }
 
 bool StockAccount::buy(const std::string stock, float amount, float value) {
+// No enough money to buy
 	if ((amount * value) > balance_) {
 		return false;
-	} else if (amount > 0.0 && value > 0.0) {
-		balance_ -= (amount * value);
+	} else if ((amount > 0.0) && (value > 0.0)) {
 
+		// To check if stock is in our stocks
 		int i = 0;
 		for (i; i < numberOfStocks_; i++) {
 			if (stocks_[i]->stock_ == stock) {
 				stocks_[i]->value_ = value;
 				stocks_[i]->amount_ += amount;
 			}
-		} // ou passer par un bool
+		}
+
+		// if not in stock
 		if (i == numberOfStocks_) {
+
+			//if tab of stock too small
 			if (numberOfStocks_ == capacityOfStocks_) {
 				capacityOfStocks_ *= 2;
 				items** temp = new items*[capacityOfStocks_];
@@ -265,46 +289,51 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 				delete[] stocks_;
 				stocks_ = temp;
 			}
-			items i;
-			i.stock_ = stock;
-			i.amount_ = amount;
-			i.stock_ = stock;
-			stocks_[numberOfStocks_] = i; // plutot l adresse?;
-			balance -= (amount * value);
+
+			items item;
+			item.amount_ = amount;
+			item.stock_ = stock;
+			item.value_ = value;
+			//cout << std::to_string(item.value_)<< item.stock_;
+
+			stocks_[numberOfStocks_] = &item;
 			numberOfStocks_++;
 		}
+		balance_ -= (amount * value);
+		cout << stocks_[0]->stock_ << "ok ok ok ok";
 		return true;
+
+		// no positive values
 	} else {
 		return false;
 	}
-	// voir les stocks et ajouter dans un tab
+// voir les stocks et ajouter dans un tab
 }
 
 bool StockAccount::sell(const std::string stock, float amount) {
+// look for the stock name
 	for (int i = 0; i < numberOfStocks_; i++) {
 		if (stocks_[i]->stock_ == stock) {
-			if (stocks_[i]->amount_ <= amount) {
+			// if enough stock
+			if (stocks_[i]->amount_ >= amount) {
 				stocks_[i]->amount_ -= amount;
-				balance += (stocks_[i]->value_) * amount;
-				return false;
+				balance_ += stocks_[i]->value_ * amount;
+				return true;
 			} else {
 				return false;
 			}
-		} else {
-			return false;
 		}
 	}
+	return false;
 }
 
 bool StockAccount::update(const std::string stock, float value) {
 	for (int i = 0; i < numberOfStocks_; i++) {
 		if (stocks_[i]->stock_ == stock) {
 			stocks_[i]->value_ = value;
-		} else {
-			return false;
 		}
 	}
-
+	return false;
 }
 
 /*
