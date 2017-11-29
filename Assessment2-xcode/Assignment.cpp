@@ -46,7 +46,7 @@ Assignment::Assignment(const string& input)
 				temp.insert(std::make_pair(varname,false));
 			}
 		} while (end != std::string::npos);
-		map_ = std::move(temp);
+		/*map_ = std::move(temp);*/
 	}
 }
 

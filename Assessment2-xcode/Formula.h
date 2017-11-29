@@ -8,7 +8,6 @@
  *      University of Leicester
  */
 
-
 #include <string>
 #include <iosfwd>
 
@@ -55,155 +54,173 @@
 // And, Or, and Not - operators
 class Formula {
 public:
-  Formula();
-  Formula(const Formula& other) = delete;
-  Formula(Formula&& other) = delete;
-  virtual ~Formula();
+	Formula();
+	Formula(const Formula& other) = delete;
+	Formula(Formula&& other) = delete;
+	virtual ~Formula();
 
-  // Returns true if the formula is valid and false otherwise
-  //
-  bool valid() const;
+	// Returns true if the formula is valid and false otherwise
+	//
+	virtual bool valid() const=0;
 
-  // Evaluates whether the formula is true or false
-  // If variables appear in the formula their value should
-  // be given in the parameter assignment.
-  // If it is not, then the value for that variable can be
-  // arbitrary
-  bool evaluate(const Assignment&) const;
+	// Evaluates whether the formula is true or false
+	// If variables appear in the formula their value should
+	// be given in the parameter assignment.
+	// If it is not, then the value for that variable can be
+	// arbitrary
+	bool evaluate(const Assignment&) const;
 
-  // prints the function to the ostream
-  // The format should look like these examples:
-  // (T and F)
-  // (not (F or (T and F)))
-  // (T and (T and (T and (X or Y))))
-  //
-  // T and F stand for true and false
-  // X and Y are variables
-  // Every or, and, and not is enclosed by parenthesis.
-  // There cannot be redundant parenthesis.
-  // This format is also read by the BoolFormula reader
-  void print(std::ostream&) const;
+	// prints the function to the ostream
+	// The format should look like these examples:
+	// (T and F)
+	// (not (F or (T and F)))
+	// (T and (T and (T and (X or Y))))
+	//
+	// T and F stand for true and false
+	// X and Y are variables
+	// Every or, and, and not is enclosed by parenthesis.
+	// There cannot be redundant parenthesis.
+	// This format is also read by the BoolFormula reader
+	void print(std::ostream&) const;
 
-  // returns the name of the class:
-  // not, and, or, T/F, variable name
-  virtual std::string name() const=0;
+	// returns the name of the class:
+	// not, and, or, T/F, variable name
+	virtual std::string name() const=0;
 
-  // Returns a pointer to a deep copy
-  Formula* copy() const;
+	// Returns a pointer to a deep copy
+	virtual Formula* copy() const=0;
 
-  // Returns a copy to a formula that is the negation
-  // of the given formula
-  Formula* negate() const;
+	// Returns a copy to a formula that is the negation
+	// of the given formula
+	virtual Formula* negate() const=0;
+
 protected:
-    std::string name_;
 private:
-  // Add private members
 };
 
-class Constant : public Formula {
+class Constant: public Formula {
 public:
-  Constant() = delete;
-  Constant(bool);
-  Constant(const Constant&) = delete;
-  Constant(Constant&&) = delete;
-  ~Constant();
+	Constant() = delete;
+	Constant(bool);
+	Constant(const Constant&) = delete;
+	Constant(Constant&&) = delete;
+	~Constant();
+
+	virtual std::string name() const;
+	bool valid() const;
+
+	Formula* copy() const;
+	Formula* negate() const;
 protected:
-  // Add protected members
+	bool value_;
 private:
-  // Add private members
+	// Add private members
 };
 
-class Variable : public Formula {
+class Variable: public Formula {
 public:
-  Variable() = delete;
-  Variable(const Variable&) = delete;
-  Variable(Variable&&) = delete;
+	Variable() = delete;
+	Variable(const Variable&) = delete;
+	Variable(Variable&&) = delete;
 
-  Variable(const std::string& name);
-  ~Variable();
+	Variable(const std::string& name);
+	~Variable();
+
+	virtual std::string name() const;
+	bool valid() const;
 
 protected:
-  // Add protected members
+	std::string name_;
 private:
-  // Add private members
+	// Add private members
 };
 
-class BinaryOperator : public Formula {
+class BinaryOperator: public Formula {
 public:
-  BinaryOperator() = delete;
-  BinaryOperator(const BinaryOperator&) = delete;
-  BinaryOperator(BinaryOperator&&) = delete;
+	BinaryOperator() = delete;
+	BinaryOperator(const BinaryOperator&) = delete;
+	BinaryOperator(BinaryOperator&&) = delete;
 
-  BinaryOperator(Formula*, Formula*);
+	BinaryOperator(Formula*, Formula*);
 
-  ~BinaryOperator();
+	~BinaryOperator();
 
 protected:
-  // Add protected members
+	Formula* left_;
+	Formula* right_;
 private:
-  // Add private members
+	// Add private members
 };
 
-class UnaryOperator : public Formula {
+class UnaryOperator: public Formula {
 public:
-  UnaryOperator() = delete;
-  UnaryOperator(const UnaryOperator&) = delete;
-  UnaryOperator(UnaryOperator&&) = delete;
+	UnaryOperator() = delete;
+	UnaryOperator(const UnaryOperator&) = delete;
+	UnaryOperator(UnaryOperator&&) = delete;
 
-  UnaryOperator(Formula*);
+	UnaryOperator(Formula*);
 
-  virtual ~UnaryOperator();
+	virtual ~UnaryOperator();
 
 protected:
-  // Add protected members
+	Formula* operand_;
 private:
-  // Add private members
+	// Add private members
 };
 
-class And : public BinaryOperator {
+class And: public BinaryOperator {
 public:
-  And() = delete;
-  And(const And&) = delete;
-  And(And&&) = delete;
+	And() = delete;
+	And(const And&) = delete;
+	And(And&&) = delete;
 
-  And(Formula*, Formula*);
+	And(Formula*, Formula*);
 
-  ~And();
+	~And();
+
+	virtual std::string name() const;
+	bool valid() const;
 protected:
-  // Add protected members
+	// Add protected members
 private:
-  // Add private members
+	// Add private members
 };
 
 class Or: public BinaryOperator {
 public:
-  Or() = delete;
-  Or(const Or&) = delete;
-  Or(Or&&) = delete;
+	Or() = delete;
+	Or(const Or&) = delete;
+	Or(Or&&) = delete;
 
-  Or(Formula*, Formula*);
+	Or(Formula*, Formula*);
 
-  ~Or();
+	~Or();
+
+	virtual std::string name() const;
+	bool valid() const;
 protected:
-  // Add protected members
+	// Add protected members
 private:
-  // Add private members
+	// Add private members
 };
 
-class Not : public UnaryOperator {
+class Not: public UnaryOperator {
 public:
-  Not() = delete;
-  Not(const Not&) = delete;
-  Not(Not&&) = delete;
+	Not() = delete;
+	Not(const Not&) = delete;
+	Not(Not&&) = delete;
 
-  Not(Formula* operand);
+	Not(Formula* operand);
 
-  ~Not();
+	~Not();
+
+	virtual std::string name() const;
+	bool valid() const;
 protected:
-  // Add protected members
+	// Add protected members
 private:
-  // Add private members
+	// Add private members
 };
-  
+
 #endif
 

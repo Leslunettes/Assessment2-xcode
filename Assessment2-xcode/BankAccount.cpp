@@ -186,8 +186,11 @@ string CurrentAccount::toString() const { // convertir float en balance
 }
 
 void CurrentAccount::day() {
+	if (balance_ < 0.0) {
+		balance_ = balance_ - (abs(balance_) * interest_ / 100.0);
+	}
 	if (balance_ < (-overdraft_)) {
-		balance_ = balance_ - (abs(balance_) * interest_ / 100) - 25;
+		balance_ = balance_ - 25.0;
 		// interet est en pourcentage ou un entier?
 	}
 }
@@ -229,7 +232,7 @@ SavingsAccount::~SavingsAccount() {
 }
 
 string SavingsAccount::type() const {
-	return "Saving Account";
+	return "Savings Account";
 }
 
 string SavingsAccount::toString() const { // convertir float en balance
@@ -274,7 +277,7 @@ string StockAccount::toString() const { // convertir float en balance
 		if (stocks_[i]->getAmount() != 0) {
 			output += " (" + stocks_[i]->getStock() + ","
 					+ std::to_string(stocks_[i]->getAmount()) + ","
-					+ std::to_string(stocks_[i]->getValue()) + ")";
+					+ std::to_string(stocks_[i]->getValue()*stocks_[i]->getAmount()) + ")";
 		}
 		// convertir en string les float?
 	}
@@ -334,15 +337,17 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 
 bool StockAccount::sell(const std::string stock, float amount) {
 // look for the stock name
-	for (int i = 0; i < numberOfStocks_; i++) {
-		if (stocks_[i]->getStock() == stock) {
-			// if enough stock
-			if (stocks_[i]->getAmount() >= amount) {
-				stocks_[i]->setAmount(stocks_[i]->getAmount() - amount);
-				balance_ += stocks_[i]->getValue() * amount;
-				return true;
-			} else {
-				return false;
+	if (amount > 0.0) {
+		for (int i = 0; i < numberOfStocks_; i++) {
+			if (stocks_[i]->getStock() == stock) {
+				// if enough stock
+				if (stocks_[i]->getAmount() >= amount) {
+					stocks_[i]->setAmount(stocks_[i]->getAmount() - amount);
+					balance_ += stocks_[i]->getValue() * amount;
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	}
@@ -350,9 +355,12 @@ bool StockAccount::sell(const std::string stock, float amount) {
 }
 
 bool StockAccount::update(const std::string stock, float value) {
-	for (int i = 0; i < numberOfStocks_; i++) {
-		if (stocks_[i]->getStock() == stock) {
-			stocks_[i]->setValue(value);
+	if (value > 0.0) {
+		for (int i = 0; i < numberOfStocks_; i++) {
+			if (stocks_[i]->getStock() == stock) {
+				stocks_[i]->setValue(value);
+				return true;
+			}
 		}
 	}
 	return false;

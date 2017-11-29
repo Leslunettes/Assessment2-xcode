@@ -12,6 +12,7 @@
 #include <iosfwd>
 #include "Formula.h"
 #include "Assignment.h"
+#include "ModelFormula.h"
 
 #ifndef BOOLFORMULA
 #define BOOLFORMULA 1

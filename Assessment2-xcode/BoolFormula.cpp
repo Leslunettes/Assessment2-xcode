@@ -33,11 +33,11 @@ BoolFormula::BoolFormula(const BoolFormula& other)
   }
 }
 
-/*BoolFormula::BoolFormula(const string& formula)
+BoolFormula::BoolFormula(const string& formula)
   : formula_(nullptr)
 {
   formula_ = parse_(formula);
-}*/
+}
 
 
 bool BoolFormula::valid() {
@@ -61,7 +61,7 @@ ostream& operator<<(ostream& stream,const BoolFormula& formula) {
   return stream;
 }
 
-/*Formula* BoolFormula::parse_(string input)
+Formula* BoolFormula::parse_(string input)
 {
   input=removeSpaces_(input);
 
@@ -73,10 +73,10 @@ ostream& operator<<(ostream& stream,const BoolFormula& formula) {
     return new Constant(false);
   }
   
-  if (input[0] != '(' && input[input.size()-1] != ')' &&
+  /*if (input[0] != '(' && input[input.size()-1] != ')' &&
 		  input.find_first_of(" \t") == std::string::npos) {
 	  return new Variable(input);
-  }
+  }*/
   if (input.size() < 3 || input[0] != '(' ||
       input[input.size()-1] != ')') {
     	return nullptr;
@@ -85,7 +85,7 @@ ostream& operator<<(ostream& stream,const BoolFormula& formula) {
   input=input.substr(1,input.size()-2);
   input=removeSpaces_(input);
 
-  string first="",second="",third="";
+ /* string first="",second="",third="";
   if (partitionToParameters_(input,first,second,third)) {
     Formula* left=parse_(first);
     Formula* right=parse_(third);
@@ -117,8 +117,8 @@ ostream& operator<<(ostream& stream,const BoolFormula& formula) {
       return 0;
   }
   else 
-    return 0;
-}*/
+    return 0;*/
+}
 
 string BoolFormula::removeSpaces_(string input)
 {
