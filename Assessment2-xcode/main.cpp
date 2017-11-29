@@ -284,7 +284,7 @@ int main(int argc, char* argv[]) {
 					<< "Test 10: Failed -> Should not be able to purchase the stock due to insufficient funds"
 					<< endl;
 		}
-
+f
 		//Test 11: Selling stock
 		if (!stockAcc->sell("Fake stock", 500)) {
 			if (stockAcc->sell("First stock", 50)) {

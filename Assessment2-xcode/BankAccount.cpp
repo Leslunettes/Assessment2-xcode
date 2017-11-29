@@ -250,7 +250,7 @@ StockAccount::StockAccount(std::string name) :
 		Account(name), capacityOfStocks_(INITIALSIZE), numberOfStocks_(0), stocks_(
 				new items*[capacityOfStocks_]) { //finir avec stock à init
 }
-
+d
 StockAccount::StockAccount(std::string name, float balance) :
 		Account(name, balance), capacityOfStocks_(INITIALSIZE), numberOfStocks_(
 				0), stocks_(new items*[capacityOfStocks_]) { // a finir
