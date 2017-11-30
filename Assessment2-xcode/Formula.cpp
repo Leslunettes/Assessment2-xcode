@@ -14,6 +14,11 @@
 using std::ostream;
 using std::string;
 
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+
 Formula::Formula() {
 }
 
@@ -21,17 +26,20 @@ Formula::~Formula() {
 }
 
 bool Formula::valid() const {
-// never used
-	return false;
+	if (this == nullptr) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 bool Formula::evaluate(const Assignment&) const {
-	// implement me
+	// nerver used
 	return false;
 }
 
 void Formula::print(ostream& stream) const {
-	// implement me
+	stream << this->name();
 }
 
 string Formula::name() const {
@@ -40,17 +48,17 @@ string Formula::name() const {
 }
 
 Formula* Formula::copy() const {
-	// implement me
+// never used
 	return nullptr;
 }
 
 Formula* Formula::negate() const {
-	// implement me
+// never used
 	return nullptr;
 }
 
 Constant::Constant(bool value) :
-		value_(value) {
+		Formula(), value_(value) {
 }
 
 Constant::~Constant() {
@@ -64,12 +72,8 @@ string Constant::name() const {
 	}
 }
 
-bool Constant::valid() const {
-	if (value_) {
-		return true;
-	} else {
-		return false;
-	}
+bool Constant::evaluate(const Assignment&) const {
+	return value_;
 }
 
 Formula* Constant::copy() const {
@@ -83,18 +87,28 @@ Formula* Constant::negate() const {
 }
 
 Variable::Variable(const string& name) :
-		name_(name) {
+		Formula(), name_(name) {
 }
 
 Variable::~Variable() {
 }
 
-bool Variable::valid() const { // a verifier
-	if (/*name_*/true) {
+bool Variable::evaluate(const Assignment& assignment) const { // a verifier
+	if (true) {
 		return true;
 	} else {
 		return false;
 	}
+}
+
+Formula* Variable::copy() const {
+// implement me
+	return nullptr;
+}
+
+Formula* Variable::negate() const {
+// implement me
+	return nullptr;
 }
 
 string Variable::name() const {
@@ -106,75 +120,127 @@ BinaryOperator::BinaryOperator(Formula* left, Formula* right) :
 }
 
 BinaryOperator::~BinaryOperator() {
-	delete left_;
-	delete right_;
+	if (left_) {
+		delete left_;
+	}
+	if (right_) {
+		delete right_;
+	}
+}
+
+bool BinaryOperator::valid() const {
+	if (this == nullptr || left_ == nullptr || right_ == nullptr) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+void BinaryOperator::print(ostream& stream) const {
+	stream << "(";
+	left_->print(stream);
+	stream << " " << this->name() << " ";
+	right_->print(stream);
+	stream << ")";
 }
 
 UnaryOperator::UnaryOperator(Formula* operand) :
-		operand_(operand) {
+		Formula(), operand_(operand) {
 }
 
 UnaryOperator::~UnaryOperator() {
-	delete operand_;
+	if (operand_) {
+		delete operand_;
+	}
+}
+
+bool UnaryOperator::valid() const {
+	if (this == nullptr || operand_ == nullptr) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+void UnaryOperator::print(ostream& stream) const {
+	stream << "(" << this->name() << " ";
+	operand_->print(stream);
+	stream << ")";
 }
 
 And::And(Formula* left, Formula* right) :
 		BinaryOperator(left, right) {
-	// implement me
 }
 
 And::~And() {
-	// implement me
 }
+
 string And::name() const {
 	return "and";
 }
 
-bool And::valid() const {
-	if (left_->valid() && right_->valid()) {
-		return true;
-	} else {
-		return false;
-	}
+bool And::evaluate(const Assignment& assignment) const {
+	return (left_->evaluate(assignment) && right_->evaluate(assignment));
+}
+
+Formula* And::copy() const {
+	And* newAnd = new And(left_, right_);
+	return newAnd;
+}
+
+Formula* And::negate() const {
+	Or* newAnd = new Or(left_->negate(), right_->negate());
+	return newAnd;
 }
 
 Or::Or(Formula* left, Formula* right) :
 		BinaryOperator(left, right) {
-	// implement me
 }
 
 Or::~Or() {
-	// implement me
 }
+
 string Or::name() const {
 	return "or";
 }
 
-bool Or::valid() const {
-	if (left_->valid() || right_->valid()) {
-		return true;
-	} else {
-		return false;
-	}
+bool Or::evaluate(const Assignment& assignment) const {
+	return (left_->evaluate(assignment) || right_->evaluate(assignment));
+}
+
+Formula* Or::copy() const {
+	Or* newOr = new Or(left_, right_);
+	return newOr;
+}
+
+Formula* Or::negate() const {
+	And* newOr = new And(left_->negate(), right_->negate());
+	return newOr;
 }
 
 Not::Not(Formula* operand) :
 		UnaryOperator(operand) {
-	// implement me
 }
 
 Not::~Not() {
-	// implement me
+// implement me
 }
 
 string Not::name() const {
 	return "not";
 }
 
-bool Not::valid() const {
-	if (operand_->valid()) {
-		return false;
-	} else {
-		return true;
-	}
+bool Not::evaluate(const Assignment& assignment) const {
+	return (!(operand_->evaluate(assignment)));
 }
+
+Formula* Not::copy() const {
+	Not* newNot = new Not(operand_);
+	return newNot;
+}
+
+Formula* Not::negate() const {
+// not of negate = itself
+	return operand_;
+}
+

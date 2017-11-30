@@ -12,7 +12,6 @@
 
 #include <iostream>
 #include "BankAccount.h"
-#include <cmath>
 #include <string>
 
 using std::string;
@@ -21,6 +20,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+// for the array of items/stock
 constexpr unsigned int INITIALSIZE = 5;
 
 /*
@@ -30,17 +30,21 @@ constexpr unsigned int INITIALSIZE = 5;
  float value_;
  float amount_;
  };*/
+
 items::items(std::string stock, float value, float amount) {
 	stock_ = stock;
 	value_ = value;
 	amount_ = amount;
 }
+
 std::string items::getStock() {
 	return stock_;
 }
+
 void items::setStock(std::string stock) {
 	stock_ = stock;
 }
+
 float items::getValue() {
 	return value_;
 }
@@ -48,9 +52,11 @@ float items::getValue() {
 void items::setValue(float value) {
 	value_ = value;
 }
+
 float items::getAmount() {
 	return amount_;
 }
+
 void items::setAmount(float amount) {
 	amount_ = amount;
 }
@@ -86,11 +92,10 @@ bool Account::deposit(float val) {
 		balance_ += val;
 		return true;
 	}
-	return true;
 }
 
 bool Account::withdraw(float val) {
-	if (val < 0.0 || ((balance_ - val) < 0.0)) {
+	if (val < 0.0 || ((balance_ - val) < 0.0)) { // i.e val>balance...
 		return false;
 	} else {
 		balance_ -= val;
@@ -114,7 +119,7 @@ string Account::type() const {
 	return ""; // abstract method
 }
 
-string Account::toString() const { // convertir float en balance????
+string Account::toString() const { // convertir float en balance
 	string balance_str = std::to_string(balance_);
 	string output = type() + " of " + name() + " (" + balance_str + ")";
 	return output;
@@ -146,8 +151,8 @@ CurrentAccount::CurrentAccount(std::string name, float overdraft,
 		fee_ = fee;
 	}
 }
-
-CurrentAccount::CurrentAccount(std::string name, float balance, float overdraft,
+// we could call the previous constructor and just add the balance
+CurrentAccount::CurrentAccount(std::string name, float balance, float overdraft, //overdraft is always a "neg" number
 		float interest, float fee) :
 		Account(name, balance) {
 	if (overdraft < 0.0) {
@@ -169,7 +174,6 @@ CurrentAccount::CurrentAccount(std::string name, float balance, float overdraft,
 	}
 }
 
-// Destructor
 CurrentAccount::~CurrentAccount() {
 	// Nothing to Delete
 }
@@ -181,17 +185,18 @@ string CurrentAccount::type() const {
 string CurrentAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
 	output += " (" + std::to_string(fee_) + "," + std::to_string(overdraft_)
-			+ ")"; // TO STRING??????
+			+ ")";
 	return output;
 }
 
-void CurrentAccount::day() {
+void CurrentAccount::day() { // balance = balance - abs(balance) * interest /100 doesnt work because of abs?
 	if (balance_ < 0.0) {
-		balance_ = balance_ - (abs(balance_) * interest_ / 100.0);
+		balance_ *= (1.0 + interest_ / 100); // interet est en pourcentage ou un entier? interest is an entire
 	}
+
 	if (balance_ < (-overdraft_)) {
 		balance_ = balance_ - 25.0;
-		// interet est en pourcentage ou un entier?
+
 	}
 }
 
@@ -217,7 +222,7 @@ SavingsAccount::SavingsAccount(std::string name, float interest) :
 	}
 }
 
-SavingsAccount::SavingsAccount(std::string name, float balance, float interest) :
+SavingsAccount::SavingsAccount(std::string name, float balance, float interest) : // we could call the previous constructor and just add the balance
 		Account(name, balance) {
 	if (interest < 0.0) {
 		interest_ = 0.0;
@@ -225,10 +230,9 @@ SavingsAccount::SavingsAccount(std::string name, float balance, float interest) 
 		interest_ = interest;
 	}
 }
-// fonction month dans Saving Account
 
 SavingsAccount::~SavingsAccount() {
-	// Implement me
+	// Nothing to delete
 }
 
 string SavingsAccount::type() const {
@@ -241,25 +245,26 @@ string SavingsAccount::toString() const { // convertir float en balance
 	return output;
 }
 
-void SavingsAccount::month() {
-	balance_ = balance_ + abs(balance_) * interest_ / 100;
+void SavingsAccount::month() { // fonction month dans Saving Account
+	balance_ *= 1.0 + interest_ / 100;
 	// en pourcentage ou en entier?
 }
 
 StockAccount::StockAccount(std::string name) :
 		Account(name), capacityOfStocks_(INITIALSIZE), numberOfStocks_(0), stocks_(
-				new items*[capacityOfStocks_]) { //finir avec stock à init
+				new items*[capacityOfStocks_]) {
 }
-d
-StockAccount::StockAccount(std::string name, float balance) :
+
+StockAccount::StockAccount(std::string name, float balance) : // could use the previous constructeur
 		Account(name, balance), capacityOfStocks_(INITIALSIZE), numberOfStocks_(
-				0), stocks_(new items*[capacityOfStocks_]) { // a finir
+				0), stocks_(new items*[capacityOfStocks_]) {
 }
 
 StockAccount::~StockAccount() {
 	for (int i = 0; i < numberOfStocks_; i++) {
 		delete stocks_[i];
 	}
+
 	if (stocks_) {
 		delete[] stocks_;
 	}
@@ -271,25 +276,27 @@ string StockAccount::type() const {
 
 string StockAccount::toString() const { // convertir float en balance
 	string output = Account::toString();
-// penser au espace
+	// penser au espace
 	//cout << numberOfStocks_ << endl;
 	for (int i = 0; i < numberOfStocks_; i++) {
 		if (stocks_[i]->getAmount() != 0) {
 			output += " (" + stocks_[i]->getStock() + ","
 					+ std::to_string(stocks_[i]->getAmount()) + ","
-					+ std::to_string(stocks_[i]->getValue()*stocks_[i]->getAmount()) + ")";
+					+ std::to_string(
+							stocks_[i]->getValue() * stocks_[i]->getAmount())
+					+ ")";
 		}
-		// convertir en string les float?
 	}
 	return output;
 }
 
 bool StockAccount::buy(const std::string stock, float amount, float value) {
-// No enough money to buy
-	if ((amount * value) > balance_) {
+
+	// No enough money to buy or no positive values
+	if (((amount * value) > balance_) || (amount < 0.0) || (value < 0.0)) {
 		return false;
-		// positives values
-	} else if ((amount > 0.0) && (value > 0.0)) {
+
+	} else {
 
 		// To check if stock is in our stocks
 		int i;
@@ -301,8 +308,8 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 				flag = false;
 				break;	//?
 			}
-
 		}
+
 		// if not in stock
 		if (flag) {
 
@@ -328,11 +335,7 @@ bool StockAccount::buy(const std::string stock, float amount, float value) {
 		//cout << stocks_[0]->stock_ << "ok ok ok ok";
 		return true;
 
-		// no positive values
-	} else {
-		return false;
-	}
-// voir les stocks et ajouter dans un tab
+	} // voir les stocks et ajouter dans un tab
 }
 
 bool StockAccount::sell(const std::string stock, float amount) {
@@ -340,11 +343,14 @@ bool StockAccount::sell(const std::string stock, float amount) {
 	if (amount > 0.0) {
 		for (int i = 0; i < numberOfStocks_; i++) {
 			if (stocks_[i]->getStock() == stock) {
+
 				// if enough stock
 				if (stocks_[i]->getAmount() >= amount) {
+
 					stocks_[i]->setAmount(stocks_[i]->getAmount() - amount);
 					balance_ += stocks_[i]->getValue() * amount;
 					return true;
+
 				} else {
 					return false;
 				}
@@ -357,6 +363,7 @@ bool StockAccount::sell(const std::string stock, float amount) {
 bool StockAccount::update(const std::string stock, float value) {
 	if (value > 0.0) {
 		for (int i = 0; i < numberOfStocks_; i++) {
+
 			if (stocks_[i]->getStock() == stock) {
 				stocks_[i]->setValue(value);
 				return true;

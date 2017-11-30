@@ -187,18 +187,14 @@ int main(int argc, char* argv[]) {
 						accounts[0]->day();
 						if (std::to_string(accounts[0]->balance())
 								== std::to_string(-978.500000)) {
-							cout << std::to_string(accounts[0]->balance())
-									<< endl;
 							accounts[0]->day();
-							cout << std::to_string(accounts[0]->balance());
 							if (std::to_string(accounts[0]->balance())
 									== std::to_string(-1032.854980)) {
 								cout << "Test 7: Passed" << endl;
 							} else {
 								cout
 										<< "Test 7: Failed -> Balance does not match the expected output (2)"
-										<< std::to_string(
-												accounts[0]->balance()) << endl;
+										<< endl;
 							}
 						} else {
 							cout
@@ -243,9 +239,7 @@ int main(int argc, char* argv[]) {
 		if (accounts[0]->toString() == currentAccountString) {
 			cout << "Test 9a: Passed" << endl;
 		} else {
-			cout
-					<< "Test 9a: Failed -> Check the formatting of your toString() : "
-					<< accounts[0]->toString() << "= ?" << currentAccountString
+			cout << "Test 9a: Failed -> Check the formatting of your toString()"
 					<< endl;
 		}
 
@@ -257,7 +251,7 @@ int main(int argc, char* argv[]) {
 			cout << "Test 9b: Passed" << endl;
 		} else {
 			cout << "Test 9b: Failed -> Check the formatting of your toString()"
-					<< accounts[1]->toString() << endl;
+					<< endl;
 		}
 
 		//Test 10: Making sure I can buy stock
@@ -284,7 +278,7 @@ int main(int argc, char* argv[]) {
 					<< "Test 10: Failed -> Should not be able to purchase the stock due to insufficient funds"
 					<< endl;
 		}
-f
+
 		//Test 11: Selling stock
 		if (!stockAcc->sell("Fake stock", 500)) {
 			if (stockAcc->sell("First stock", 50)) {
@@ -339,7 +333,6 @@ f
 			}
 		} else {
 			cout << "Test 13: Failed -> Check the formatting of your toString()"
-					<< endl << accounts[2]->toString() << "=" << firstString
 					<< endl;
 		}
 
@@ -353,7 +346,7 @@ f
 			} else {
 				cout
 						<< "Test 14: Failed -> Check the formatting of your toString() or did you forget to ignore a stock that has an amount of 0"
-						<< accounts[2]->toString() << endl;
+						<< endl;
 			}
 		} else {
 			cout
@@ -491,9 +484,6 @@ f
 		}
 
 		//Test 25: (Might be a repeat) depositing money into an account that is below the overdraft limit
-		cout << accounts[0]->toString() << endl;
-		cout << accounts[1]->toString() << endl;
-		cout << accounts[2]->toString() << endl;
 		if (accounts[0]->deposit(1040.0)) {
 			if (std::to_string(accounts[0]->balance())
 					== std::to_string(2.145020)) {
@@ -505,9 +495,7 @@ f
 		} else {
 			cout << "Test 25: Failed -> Could not deposit" << endl;
 		}
-		cout << accounts[0]->toString() << endl;
-		cout << accounts[1]->toString() << endl;
-		cout << accounts[2]->toString() << endl;
+
 		//Test 26: Testing the type methods
 		if (accounts[0]->type() == "Current Account") {
 			if (accounts[1]->type() == "Savings Account") {
@@ -537,6 +525,567 @@ f
 					<< endl;
 		}
 
+	}
+
+	if (true) {
+		cout << "\nForumla.cpp tests" << endl;
+
+		//Test 1: Simple OR (pass)
+		string test1_buffer = "(T or F)";
+		string test1_assignment = ""; //Not needed
+
+		BoolFormula test1_formula(test1_buffer);
+
+		if (test1_formula.valid()) {
+			if (test1_formula.evaluate(test1_assignment)) {
+				cout << "Test 1: Passed" << endl;
+			} else {
+				cout
+						<< "Test 1: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 1: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 2: Simple AND (pass)
+		string test2_buffer = "(T and T)";
+		string test2_assignment = ""; //Not needed
+
+		BoolFormula test2_formula(test2_buffer);
+
+		if (test2_formula.valid()) {
+			if (test2_formula.evaluate(test2_assignment)) {
+				cout << "Test 2: Passed" << endl;
+			} else {
+				cout
+						<< "Test 2: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 2: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 3: Simple OR (fail)
+		string test3_buffer = "(F or F)";
+		string test3_assignment = ""; //Not needed
+
+		BoolFormula test3_formula(test3_buffer);
+
+		if (test3_formula.valid()) {
+			if (!test3_formula.evaluate(test3_assignment)) {
+				cout << "Test 3: Passed" << endl;
+			} else {
+				cout
+						<< "Test 3: Failed -> Evaluated to be true when it should be false"
+						<< endl;
+			}
+		} else {
+			cout << "Test 3: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 4: Simple AND (fail)
+		string test4_buffer = "(T and F)";
+		string test4_assignment = ""; //Not needed
+
+		BoolFormula test4_formula(test4_buffer);
+
+		if (test4_formula.valid()) {
+			if (!test4_formula.evaluate(test4_assignment)) {
+				cout << "Test 4: Passed" << endl;
+			} else {
+				cout
+						<< "Test 4: Failed -> Evaluated to be true when it should be false"
+						<< endl;
+			}
+		} else {
+			cout << "Test 4: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 5: Simple NOT
+		string test5_buffer = "(not (T and F))";
+		string test5_assignment = ""; //Not needed
+
+		BoolFormula test5_formula(test5_buffer);
+
+		if (test5_formula.valid()) {
+			if (test5_formula.evaluate(test5_assignment)) {
+				cout << "Test 5: Passed" << endl;
+			} else {
+				cout
+						<< "Test 5: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 5: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 6: Simple variables
+		string test6_buffer = "(A or B)";
+		string test6_assignment = "A=T,B=F";
+
+		BoolFormula test6_formula(test6_buffer);
+
+		if (test6_formula.valid()) {
+			if (test6_formula.evaluate(test6_assignment)) {
+				cout << "Test 6: Passed" << endl;
+			} else {
+				cout
+						<< "Test 6: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 6: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 7: Two nots with variables
+		string test7_buffer = "(not (not (A or B)))";
+		string test7_assignment = "A=T,B=F";
+
+		BoolFormula test7_formula(test7_buffer);
+
+		if (test7_formula.valid()) {
+			if (test7_formula.evaluate(test7_assignment)) {
+				cout << "Test 7: Passed" << endl;
+			} else {
+				cout
+						<< "Test 7: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 7: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 8: or & and with variables and constants
+		string test8_buffer = "((A or B) and (T or F))";
+		string test8_assignment = "A=T,B=F";
+
+		BoolFormula test8_formula(test8_buffer);
+
+		if (test8_formula.valid()) {
+			if (test8_formula.evaluate(test8_assignment)) {
+				cout << "Test 8: Passed" << endl;
+			} else {
+				cout
+						<< "Test 8: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 8: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 9: and & or with variables and constants mixed
+		string test9_buffer = "((A and T) or (B or F))";
+		string test9_assignment = "A=T,B=F";
+
+		BoolFormula test9_formula(test9_buffer);
+
+		if (test9_formula.valid()) {
+			if (test9_formula.evaluate(test9_assignment)) {
+				cout << "Test 9: Passed" << endl;
+			} else {
+				cout << "Test 9: Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 9: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 10: Complex forumla
+		string test10_buffer =
+				"((A and (not (F or F))) and (C and (not (not (T or B)))))";
+		string test10_assignment = "A=T,B=F,C=T";
+
+		BoolFormula test10_formula(test10_buffer);
+
+		if (test10_formula.valid()) {
+			if (test10_formula.evaluate(test10_assignment)) {
+				cout << "Test 10: Passed" << endl;
+			} else {
+				cout
+						<< "Test 10: Failed -> Evaluated to be false when it should be true"
+						<< endl;
+			}
+		} else {
+			cout << "Test 10: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 11: Basic validation test (OR)
+		string test11_buffer = "(T or F"; //Missing bracket
+		string test11_assignment = ""; //Not needed
+
+		BoolFormula test11_formula(test11_buffer);
+
+		if (!test11_formula.valid()) {
+			cout << "Test 11: Passed" << endl;
+		} else {
+			cout << "Test 11: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 12: Basic validation test (AND)
+		string test12_buffer = "(T and F"; //Missing bracket
+		string test12_assignment = ""; //Not needed
+
+		BoolFormula test12_formula(test12_buffer);
+
+		if (!test12_formula.valid()) {
+			cout << "Test 12: Passed" << endl;
+		} else {
+			cout << "Test 12: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 13; Basic validation test with variables
+		string test13_buffer = "(A or B"; //Missing bracket
+		string test13_assignment = "A=T,B=T";
+
+		BoolFormula test13_formula(test13_buffer);
+
+		if (!test13_formula.valid()) {
+			cout << "Test 13: Passed" << endl;
+		} else {
+			cout << "Test 13: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 14: Simple mistake test with variables
+		string test14_buffer = "(T or F) and (A or B)"; //Missing bracket around whole argument
+		string test14_assignment = "A=T,B=F";
+
+		BoolFormula test14_formula(test14_buffer);
+
+		if (!test14_formula.valid()) {
+			cout << "Test 14: Passed" << endl;
+		} else {
+			cout << "Test 14: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 15: Missing internal bracket.
+		string test15_buffer = "((T or F and (A or B))"; //Missing bracket after F
+		string test15_assignment = "A=T,B=F";
+
+		BoolFormula test15_formula(test15_buffer);
+
+		if (!test15_formula.valid()) {
+			cout << "Test 15: Passed" << endl;
+		} else {
+			cout << "Test 15: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 16: More complex validation test
+		string test16_buffer = "((F or (not (F and F))) and (not (F or Y))"; //Missing end bracket
+		string test16_assignment = ""; //not needed
+
+		BoolFormula test16_formula(test16_buffer);
+
+		if (!test16_formula.valid()) {
+			cout << "Test 16: Passed" << endl;
+		} else {
+			cout << "Test 16: Failed -> Validated an invalid formula" << endl;
+		}
+
+		//Test 17: Copy method - Simple (OR)
+		string test17_buffer = "(T or F)";
+		string test17_assignment = ""; //Not needed
+
+		BoolFormula test17_formula(test17_buffer);
+
+		if (test17_formula.valid()) {
+			BoolFormula test17_copy(test17_formula);
+
+			//Converting the print() method to a string
+			//https://stackoverflow.com/questions/3513173/converting-ostream-into-standard-string
+			std::ostringstream stream;
+			stream << test17_copy;
+			std::string str = stream.str();
+
+			if (str == test17_buffer) {
+				cout << "Test 17: Passed" << endl;
+			} else {
+				cout
+						<< "Test 17: Failed -> The copy does not match the original forumla"
+						<< endl;
+			}
+		} else {
+			cout << "Test 17: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 18: Copy method - Simple (AND)
+		string test18_buffer = "(T and F)";
+		string test18_assignment = ""; //Not needed
+
+		BoolFormula test18_formula(test18_buffer);
+
+		if (test18_formula.valid()) {
+			BoolFormula test18_copy(test18_formula);
+
+			//Converting the print() method to a string
+			//https://stackoverflow.com/questions/3513173/converting-ostream-into-standard-string
+			std::ostringstream stream;
+			stream << test18_copy;
+			std::string str = stream.str();
+
+			if (str == test18_buffer) {
+				cout << "Test 18: Passed" << endl;
+			} else {
+				cout
+						<< "Test 18: Failed -> The copy does not match the original forumla"
+						<< endl;
+			}
+		} else {
+			cout << "Test 18: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 19: Copy method - Simple (Not)
+		string test19_buffer = "(not (T and F))";
+		string test19_assignment = ""; //Not needed
+
+		BoolFormula test19_formula(test19_buffer);
+
+		if (test19_formula.valid()) {
+			BoolFormula test19_copy(test19_formula);
+
+			//Converting the print() method to a string
+			//https://stackoverflow.com/questions/3513173/converting-ostream-into-standard-string
+			std::ostringstream stream;
+			stream << test19_copy;
+			std::string str = stream.str();
+
+			if (str == test19_buffer) {
+				cout << "Test 19: Passed" << endl;
+			} else {
+				cout
+						<< "Test 19: Failed -> The copy does not match the original forumla"
+						<< str << endl;
+			}
+		} else {
+			cout << "Test 19: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 20: Copy method - variables
+		string test20_buffer = "(A or B)";
+		string test20_assignment = "A=T,B=F"; //Not needed
+
+		//BoolFormula test20_formula(test20_buffer);
+
+		BoolFormula *test20_formula = new BoolFormula(test20_buffer);
+
+		if (test20_formula->valid()) {
+			BoolFormula test20_copy(*test20_formula);
+
+			//Converting the print() method to a string
+			//https://stackoverflow.com/questions/3513173/converting-ostream-into-standard-string
+			std::ostringstream stream;
+			stream << test20_copy;
+			std::string str = stream.str();
+			;
+
+			if (str == test20_buffer) {
+				//Making sure its a deep copy.
+				delete test20_formula;
+				test20_formula = NULL;
+
+				//If you get a segmentation fault then you haven't performed a deep copy!
+				if (test20_copy.valid()) {
+					cout << "Test 20: Passed" << endl;
+				}
+
+			} else {
+				cout
+						<< "Test 20: Failed -> The copy does not match the original forumla"
+						<< endl;
+			}
+		} else {
+			cout << "Test 20: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 21: Copy method - more complex formula
+		string test21_buffer =
+				"((A or (not (B and F))) and (not (B and (F or T))))";
+		string test21_assignment = "A=T,B=F"; //Not needed
+
+		BoolFormula test21_formula(test21_buffer);
+
+		if (test21_formula.valid()) {
+			BoolFormula test21_copy(test21_formula);
+
+			//Converting the print() method to a string
+			//https://stackoverflow.com/questions/3513173/converting-ostream-into-standard-string
+			std::ostringstream stream;
+			stream << test21_copy;
+			std::string str = stream.str();
+
+			if (str == test21_buffer) {
+				cout << "Test 21: Passed" << endl;
+			} else {
+				cout
+						<< "Test 21: Failed -> The copy does not match the original forumla"
+						<< endl;
+			}
+		} else {
+			cout << "Test 21: Failed -> Could not validate for the formula"
+					<< endl;
+		}
+
+		//Test 22: Negate method - simple test (T and F)
+		Formula* test22_left = new Constant(true);
+		Formula* test22_right = new Constant(false);
+		Formula* test22_formula = new And(test22_left, test22_right);
+
+		Formula* test22_negated = test22_formula->negate();
+
+		std::ostringstream stream_22;
+		test22_negated->print(stream_22);
+
+		if (stream_22.str() == "(F or T)") {
+			cout << "Test 22: Passed" << endl;
+		} else {
+			cout << "Test 22: Failed -> Negated answer does not match" << endl;
+		}
+
+		//Test 23: Negated method - more complex ((T and F) or (T and T))
+		Formula* test23_left = new Constant(true);
+		Formula* test23_right = new Constant(true);
+		Formula* test23_andFormula = new And(test23_left, test23_right);
+		Formula* test23_formula = new Or(test22_formula, test23_andFormula);
+
+		Formula* test23_negated = test23_formula->negate();
+		std::ostringstream stream_23;
+		test23_negated->print(stream_23);
+
+		if (stream_23.str() == "((F or T) and (F or F))") {
+			cout << "Test 23: Passed" << endl;
+		} else {
+			cout << "Test 23: Failed -> Negated answer does not match" << endl;
+		}
+
+		//Test 24: Not negation test (not (T and F))
+		Formula* test24_not = new Not(test22_formula);
+		Formula* test24_negated = test24_not->negate();
+
+		std::ostringstream stream_24;
+		test24_negated->print(stream_24);
+
+		if (stream_24.str() == "(T and F)") {
+			cout << "Test 24: passed" << endl;
+		} else {
+			cout << "Test 24: Failed -> Negated answer does not match"
+					<< stream_24.str() << endl;
+		}
+
+		//Test 25: Complex negation (not ((T and F) or (not (T and F))))
+		Formula* test25_formula = new Or(test22_formula, test24_not);
+		Formula* test25_negated = test25_formula->negate();
+
+		std::ostringstream stream_25;
+		test25_negated->print(stream_25);
+
+		if (stream_25.str() == "((F or T) and (T and F))") {
+			cout << "Test 25: passed" << endl;
+		} else {
+			cout << "Test 25: Failed -> Negated answer does not match" << endl;
+		}
+
+		cout << "hey hey ";
+		//Test 26: Negation with variable names (A or B);
+
+		Formula* test26_left = new Variable("A");
+		Formula* test26_right = new Variable("B");
+		Formula* test26_formula = new Or(test26_left, test26_right);
+
+		Formula* test26_negated = test26_formula->negate();
+
+		std::ostringstream stream_26;
+		test26_negated->print(stream_26);
+
+		if (stream_26.str() == "((not A) and (not B))") {
+			cout << "Test 26: Passed" << endl;
+		} else {
+			cout << "Test 26: Failed -> Negated answer does not match" << endl;
+		}
+
+		//Test 27: More complex negation with variable names ((A or B) and (T or F))
+		Formula* test27_left = new Constant(true);
+		Formula* test27_right = new Constant(false);
+		Formula* test27_orFormula = new Or(test27_left, test27_right);
+
+		Formula* test27_formula = new And(test26_formula, test27_orFormula);
+
+		Formula* test27_negated = test27_formula->negate();
+
+		std::ostringstream stream_27;
+		test27_negated->print(stream_27);
+
+		if (stream_27.str() == "(((not A) and (not B)) or (F and T))") {
+			cout << "Test 27: Passed" << endl;
+		} else {
+			cout << "Test 27: Failed -> Negated answer does not match" << endl;
+		}
+
+		//Test 28: Complex negation with variables (((A or B) and (T or F)) or (not (A or B)))
+		Formula* test28_negatedTemp = new Not(test26_formula);
+		Formula* test28_formula = new Or(test27_formula, test28_negatedTemp);
+
+		Formula* test28_negated = test28_formula->negate();
+
+		std::ostringstream stream_28;
+		test28_negated->print(stream_28);
+
+		if (stream_28.str()
+				== "((((not A) and (not B)) or (F and T)) and (A or B))") {
+			cout << "Test 28: Passed" << endl;
+		} else {
+			cout << "Test 28: Failed -> Negated answer does not match" << endl;
+		}
+
+		//Test 29: validity with missing expressions i.e. (T or )
+		string test29_buffer = "(T or )";
+		BoolFormula *test29_formula = new BoolFormula(test29_buffer);
+
+		if (!test29_formula->valid()) {
+			cout << "Test 29: Passed" << endl;
+		} else {
+			cout << "Test 29: Failed -> COULD validate for the formula" << endl;
+		}
+
+		//Test 30: valid is breacket missing in front i,e T or F)
+		string test30_buffer = "T or )";
+		BoolFormula *test30_formula = new BoolFormula(test30_buffer);
+
+		if (!test30_formula->valid()) {
+			cout << "Test 30: Passed" << endl;
+		} else {
+			cout << "Test 30: Failed -> COULD validate for the formula" << endl;
+		}
+
+		//Test 31: Evaluating variable formula without assignment
+		string test31_buffer = "((T or F) and (A or B))";
+		string test31_assignment = "";
+
+		BoolFormula test31_formula(test31_buffer);
+
+		if (test31_formula.valid()) {
+			if (!test31_formula.evaluate(test31_assignment)) {
+				cout << "Test 31: Passed" << endl;
+			} else {
+				cout << "Test 31: Failed -> Should evaluate to be false"
+						<< endl;
+			}
+		} else {
+			cout << "Test 31: Failed -> Validated an invalid formula" << endl;
+		}
 	}
 
 	return 0;

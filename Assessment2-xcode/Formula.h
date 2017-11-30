@@ -61,14 +61,14 @@ public:
 
 	// Returns true if the formula is valid and false otherwise
 	//
-	virtual bool valid() const=0;
+	virtual bool valid() const;
 
 	// Evaluates whether the formula is true or false
 	// If variables appear in the formula their value should
 	// be given in the parameter assignment.
 	// If it is not, then the value for that variable can be
 	// arbitrary
-	bool evaluate(const Assignment&) const;
+	virtual bool evaluate(const Assignment&) const=0;
 
 	// prints the function to the ostream
 	// The format should look like these examples:
@@ -81,7 +81,7 @@ public:
 	// Every or, and, and not is enclosed by parenthesis.
 	// There cannot be redundant parenthesis.
 	// This format is also read by the BoolFormula reader
-	void print(std::ostream&) const;
+	virtual void print(std::ostream&) const;
 
 	// returns the name of the class:
 	// not, and, or, T/F, variable name
@@ -95,6 +95,7 @@ public:
 	virtual Formula* negate() const=0;
 
 protected:
+
 private:
 };
 
@@ -107,10 +108,10 @@ public:
 	~Constant();
 
 	virtual std::string name() const;
-	bool valid() const;
+	bool evaluate(const Assignment&) const;
 
-	Formula* copy() const;
-	Formula* negate() const;
+	virtual Formula* copy() const;
+	virtual Formula* negate() const;
 protected:
 	bool value_;
 private:
@@ -127,12 +128,14 @@ public:
 	~Variable();
 
 	virtual std::string name() const;
-	bool valid() const;
+	bool evaluate(const Assignment&) const;
+
+	virtual Formula* copy() const;
+	virtual Formula* negate() const;
 
 protected:
 	std::string name_;
 private:
-	// Add private members
 };
 
 class BinaryOperator: public Formula {
@@ -145,11 +148,16 @@ public:
 
 	~BinaryOperator();
 
+	bool valid() const;
+
+	virtual void print(std::ostream&) const;
+
+	virtual std::string name() const=0;
+
 protected:
 	Formula* left_;
 	Formula* right_;
 private:
-	// Add private members
 };
 
 class UnaryOperator: public Formula {
@@ -162,10 +170,15 @@ public:
 
 	virtual ~UnaryOperator();
 
+	bool valid() const;
+
+	virtual void print(std::ostream&) const;
+
+	virtual std::string name() const=0;
+
 protected:
 	Formula* operand_;
 private:
-	// Add private members
 };
 
 class And: public BinaryOperator {
@@ -179,11 +192,13 @@ public:
 	~And();
 
 	virtual std::string name() const;
-	bool valid() const;
+	bool evaluate(const Assignment&) const;
+
+	virtual Formula* copy() const;
+	virtual Formula* negate() const;
+
 protected:
-	// Add protected members
 private:
-	// Add private members
 };
 
 class Or: public BinaryOperator {
@@ -197,11 +212,14 @@ public:
 	~Or();
 
 	virtual std::string name() const;
-	bool valid() const;
+	bool evaluate(const Assignment&) const;
+
+	virtual Formula* copy() const;
+	virtual Formula* negate() const;
+
 protected:
-	// Add protected members
 private:
-	// Add private members
+
 };
 
 class Not: public UnaryOperator {
@@ -215,11 +233,14 @@ public:
 	~Not();
 
 	virtual std::string name() const;
-	bool valid() const;
+	bool evaluate(const Assignment&) const;
+
+	virtual Formula* copy() const;
+	virtual Formula* negate() const;
+
 protected:
-	// Add protected members
 private:
-	// Add private members
+
 };
 
 #endif

@@ -6,6 +6,8 @@
  *      Module: CO3105
  *      Department of Computer Science
  *      University of Leicester
+ *
+ *      Student : AVP9
  */
 
 #ifndef BANKACCOUNT_H_
@@ -14,16 +16,31 @@
 #include <string>
 #include <iosfwd>
 
+// This exercise implements a simple hierarchy of bank accounts using inheritance.
+// The base class is Account and there are three derived classes:
+// CurrentAccount, SavingsAccount, and StockAccount.
+// Each bank account supports several functions as explained below.
+//
+// You should add the virtual keyword where appropriate and then implement the functions
+// where they are most appropriate.
+// Account could be an abstract class but all other classes should be
+// concrete classes.
+//
+// StockAccount has additional features to buy and sell stocks and update
+// their prices.
+
+// we could make a structure but doesn t work for me ...
 class items {
 public:
 	items() = delete;
 	items(const items&) = delete;
 	items(items&&) = delete;
 
+	// constructor (only one way to make a item) and destructor
 	items(std::string stock, float value, float amount);
-
 	~items();
 
+	//getters and setters
 	std::string getStock();
 	float getValue();
 	float getAmount();
@@ -38,19 +55,6 @@ private:
 	float amount_;
 
 };
-//
-// This exercise implements a simple hierarchy of bank accounts using inheritance.
-// The base class is Account and there are three derived classes:
-// CurrentAccount, SavingsAccount, and StockAccount.
-// Each bank account supports several functions as explained below.
-//
-// You should add the virtual keyword where appropriate and then implement the functions
-// where they are most appropriate.
-// Account could be an abstract class but all other classes should be
-// concrete classes.
-//
-// StockAccount has additional features to buy and sell stocks and update
-// their prices.
 
 class Account {
 public:
@@ -87,7 +91,7 @@ public:
 	// Savings account is increased by the interest given in it
 	// every month
 	// Stock account does not have daily / monthly events
-	virtual void day();	// methode abstracte, ne peut rien faire dépend du type de compte
+	virtual void day();	// used in CURRENT ACCOUNT only
 	virtual void month();
 
 	// Return the name of the owner
@@ -98,7 +102,7 @@ public:
 	// Current Account
 	// Savings Account
 	// Stock Account
-	virtual std::string type() const=0;
+	virtual std::string type() const=0; // no type here
 
 	// All accounts output:
 	// "Type of account" of "name" (balance)
@@ -119,11 +123,11 @@ public:
 	// Override the redirection. Should work for all
 	// references to Drinks
 	friend std::ostream& operator<<(std::ostream&, const Account&);
+
 protected:
 	float balance_;
 	std::string name_;
 private:
-	// add private members
 };
 
 class CurrentAccount: public Account {
@@ -148,17 +152,16 @@ public:
 
 	virtual std::string toString() const;
 
-	virtual void day();
+	virtual void day(); // some virtual keywords are not needed, but we don t know...
 	virtual void month();
 
 	virtual bool withdraw(float val);
+
 protected:
 	float overdraft_;
 	float interest_;
 	float fee_;
-
 private:
-	// Add private members
 };
 
 class SavingsAccount: public Account {
@@ -179,10 +182,10 @@ public:
 	virtual std::string toString() const;
 
 	virtual void month();
+
 protected:
 	float interest_;
 private:
-	// Add private members
 };
 
 class StockAccount: public Account {
@@ -225,10 +228,10 @@ protected:
 	int capacityOfStocks_;
 	int numberOfStocks_;
 private:
-
 };
 
 #endif
+
 /*
  * BankAccount.h
  *
