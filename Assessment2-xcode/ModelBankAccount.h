@@ -54,7 +54,7 @@ public:
 	// references to Drinks
 	friend std::ostream& operator<<(std::ostream&, const Account&);
 public:
-	void* pms_[5];
+	void* pms_[50];
 private:
 protected:
 };
@@ -85,7 +85,7 @@ public:
 	std::string type() const override;
 	std::string toString() const override;
 public:
-	void* pms_[5];
+	void* pms_[50];
 private:
 };
 
@@ -111,7 +111,7 @@ public:
 	std::string type() const override;
 	std::string toString() const override;
 public:
-	void* pms_[5];
+	void* pms_[50];
 private:
 };
 
@@ -141,7 +141,7 @@ public:
 	std::string type() const override;
 	std::string toString() const override;
 public:
-	void* pms_[5];
+	void* pms_[50];
 private:
 };
 

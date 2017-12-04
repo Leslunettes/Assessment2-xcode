@@ -16,7 +16,6 @@
 #include "BoolFormula.h"
 #include "Assignment.h"
 #include "BankAccount.h"
-#include "ModelFormula.h"
 
 using std::cout;
 using std::cin;
@@ -692,7 +691,7 @@ int main(int argc, char* argv[]) {
 			if (test9_formula.evaluate(test9_assignment)) {
 				cout << "Test 9: Passed" << endl;
 			} else {
-				cout << "Test 9: Evaluated to be false when it should be true"
+				cout << "Test 9: Failed -> Evaluated to be false when it should be true"
 						<< endl;
 			}
 		} else {
@@ -998,7 +997,6 @@ int main(int argc, char* argv[]) {
 			cout << "Test 25: Failed -> Negated answer does not match" << endl;
 		}
 
-		cout << "hey hey ";
 		//Test 26: Negation with variable names (A or B);
 
 		Formula* test26_left = new Variable("A");

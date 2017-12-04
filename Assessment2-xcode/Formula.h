@@ -6,6 +6,8 @@
  *      Module: CO7105
  *      Department of Informatics
  *      University of Leicester
+ *
+ *      Student : AVP9
  */
 
 #include <string>
@@ -60,7 +62,6 @@ public:
 	virtual ~Formula();
 
 	// Returns true if the formula is valid and false otherwise
-	//
 	virtual bool valid() const;
 
 	// Evaluates whether the formula is true or false
@@ -95,7 +96,7 @@ public:
 	virtual Formula* negate() const=0;
 
 protected:
-
+	// no attribute
 private:
 };
 
@@ -107,15 +108,15 @@ public:
 	Constant(Constant&&) = delete;
 	~Constant();
 
-	virtual std::string name() const;
+	virtual std::string name() const; //some virtual keywords are useless
 	bool evaluate(const Assignment&) const;
 
 	virtual Formula* copy() const;
 	virtual Formula* negate() const;
+
 protected:
-	bool value_;
+	bool value_; // could be private
 private:
-	// Add private members
 };
 
 class Variable: public Formula {
@@ -145,14 +146,11 @@ public:
 	BinaryOperator(BinaryOperator&&) = delete;
 
 	BinaryOperator(Formula*, Formula*);
-
-	~BinaryOperator();
+	virtual ~BinaryOperator();
 
 	bool valid() const;
 
-	virtual void print(std::ostream&) const;
-
-	virtual std::string name() const=0;
+	void print(std::ostream&) const;
 
 protected:
 	Formula* left_;
@@ -167,14 +165,11 @@ public:
 	UnaryOperator(UnaryOperator&&) = delete;
 
 	UnaryOperator(Formula*);
-
 	virtual ~UnaryOperator();
 
 	bool valid() const;
 
-	virtual void print(std::ostream&) const;
-
-	virtual std::string name() const=0;
+	void print(std::ostream&) const;
 
 protected:
 	Formula* operand_;
@@ -188,7 +183,6 @@ public:
 	And(And&&) = delete;
 
 	And(Formula*, Formula*);
-
 	~And();
 
 	virtual std::string name() const;
@@ -229,7 +223,6 @@ public:
 	Not(Not&&) = delete;
 
 	Not(Formula* operand);
-
 	~Not();
 
 	virtual std::string name() const;

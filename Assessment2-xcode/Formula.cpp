@@ -6,6 +6,8 @@
  *      Module: CO7105
  *      Department of Informatics
  *      University of Leicester
+ *
+ *      STudent : AVP9
  */
 #include <string>
 #include <iostream>
@@ -33,8 +35,7 @@ bool Formula::valid() const {
 	}
 }
 
-bool Formula::evaluate(const Assignment&) const {
-	// nerver used
+bool Formula::evaluate(const Assignment&) const { // nerver used
 	return false;
 }
 
@@ -42,22 +43,19 @@ void Formula::print(ostream& stream) const {
 	stream << this->name();
 }
 
-string Formula::name() const {
-//never used
+string Formula::name() const { // nerver used
 	return "";
 }
 
-Formula* Formula::copy() const {
-// never used
+Formula* Formula::copy() const { // never used
 	return nullptr;
 }
 
-Formula* Formula::negate() const {
-// never used
+Formula* Formula::negate() const { // never used
 	return nullptr;
 }
 
-Constant::Constant(bool value) :
+Constant::Constant(bool value) : //constructeur formula is maybe useless
 		Formula(), value_(value) {
 }
 
@@ -93,30 +91,28 @@ Variable::Variable(const string& name) :
 Variable::~Variable() {
 }
 
-bool Variable::evaluate(const Assignment& assignment) const { // a verifier
-	if (true) {
-		return true;
-	} else {
-		return false;
-	}
+bool Variable::evaluate(const Assignment& assignment) const { // a VERIFIER
+	//cout << &assignment;
+	cout << name() << " = " << assignment("A") << endl;
+	return assignment(name_);
 }
 
 Formula* Variable::copy() const {
-// implement me
-	return nullptr;
+	Variable* newVar = new Variable(name_);
+	return newVar;
 }
 
-Formula* Variable::negate() const {
-// implement me
-	return nullptr;
+Formula* Variable::negate() const { // a VERIFIER
+	Not* newVar = new Not(new Variable(name_));
+	return newVar;
 }
 
 string Variable::name() const {
 	return name_;
 }
 
-BinaryOperator::BinaryOperator(Formula* left, Formula* right) :
-		left_(left), right_(right) {
+BinaryOperator::BinaryOperator(Formula* left, Formula* right) : // no need to add Formula()
+		Formula(), left_(left), right_(right) {
 }
 
 BinaryOperator::~BinaryOperator() {
@@ -223,7 +219,6 @@ Not::Not(Formula* operand) :
 }
 
 Not::~Not() {
-// implement me
 }
 
 string Not::name() const {

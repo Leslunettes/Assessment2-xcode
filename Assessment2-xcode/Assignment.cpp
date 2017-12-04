@@ -27,7 +27,7 @@ Assignment::Assignment(const string& input)
 		do {
 			std::string::size_type start = end + 1;
 			end = input.find(',',start);
-			string first = input.substr(start,end);
+			string first = input.substr(start,end-start);
 			if (first.find('=') == std::string::npos) {
 				return;
 			}

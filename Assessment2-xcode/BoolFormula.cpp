@@ -89,6 +89,7 @@ Formula* BoolFormula::parse_(string input) {
 				delete left;
 			if (right)
 				delete right;
+			return 0;
 		}
 		if (0 == second.compare(ANDSTRING)) {
 			return new And(left, right);
